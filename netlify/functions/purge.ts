@@ -9,7 +9,7 @@ export default async (req: Request) => {
     tags
   });
 
-  return new Response("Purged");
+  return Response.redirect(new URL("/", url));
 };
 
 export const config: Config = {
