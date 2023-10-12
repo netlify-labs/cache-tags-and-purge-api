@@ -1,28 +1,17 @@
-import type { Handler, HandlerEvent, HandlerContext } from "@netlify/functions"
+import { Config, purgeCache } from "@netlify/functions";
 
-const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
-    const purgeToken: string = context.clientContext.custom["purge_api_token"];
-    const cacheTag: string = event.queryStringParameters?.tag;
+export default async (req: Request) => {
+  const url = new URL(req.url);
+  const cacheTag = url.searchParams.get("tag");
+  const tags = cacheTag ? [cacheTag] : undefined;
 
-    console.log("Purging tag: ", cacheTag);
-    const response = await fetch("https://api.netlify.com/api/v1/purge", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json; charset=utf8",
-            "Authorization": `Bearer ${purgeToken}`
-        },
-        body: JSON.stringify({
-            site_id: process.env.SITE_ID,
-            cache_tags: [cacheTag]
-        })
-    })
+  await purgeCache({
+    tags
+  });
 
-    return {
-        statusCode: 301,
-        headers: {
-            Location: "/",
-        },
-    }
-}
+  return Response.redirect("/");
+};
 
-export { handler };
+export const config: Config = {
+  path: "/purge"
+};
