@@ -5,9 +5,15 @@ export default async (req: Request) => {
   const cacheTag = url.searchParams.get("tag");
   const tags = cacheTag ? [cacheTag] : undefined;
 
-  await purgeCache({
-    tags
-  });
+  console.log("Purging cache:", { url, cacheTag, tags });
+
+  try {
+    await purgeCache({
+      tags
+    });
+  } catch (error) {
+    console.error(error);
+  }
 
   return Response.redirect(new URL("/", url));
 };
