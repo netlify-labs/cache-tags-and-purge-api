@@ -5,17 +5,16 @@ export default async (req: Request) => {
   const cacheTag = url.searchParams.get("tag");
   const tags = cacheTag ? [cacheTag] : undefined;
 
-  console.log("Purging cache:", { url, cacheTag, tags });
+  await purgeCache({
+    tags
+  });
 
-  try {
-    await purgeCache({
-      tags
-    });
-  } catch (error) {
-    console.error(error);
-  }
-
-  return Response.redirect(new URL("/", url));
+  return new Response(null, {
+    headers: {
+      Location: new URL("/", url).toString()
+    },
+    status: 301
+  });
 };
 
 export const config: Config = {
