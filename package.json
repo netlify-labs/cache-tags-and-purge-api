@@ -9,10 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@netlify/functions": "^2.0.2"
-  },
   "devDependencies": {
     "@types/node": "^20.7.0"
+  },
+  "dependencies": {
+    "@netlify/functions": "^2.3.0"
   }
 }
