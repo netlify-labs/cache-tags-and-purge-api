@@ -9,12 +9,7 @@ export default async (req: Request) => {
     tags
   });
 
-  return new Response(null, {
-    headers: {
-      Location: new URL("/", url).toString()
-    },
-    status: 301
-  });
+  return new Response("Purged");
 };
 
 export const config: Config = {
